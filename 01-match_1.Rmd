@@ -1,0 +1,49 @@
+# Challengers vs Kings  (M1) {-#match1}
+
+```{r}
+team_1 <-  'Kings'
+team_2 <- 'Challengers'
+inn_1 <-  'Kings'
+inn_2 <- 'Challengers'
+match <- 1
+  
+d1 <- readxl::read_xlsx('./ScoreCards.xlsx', sheet='M1')  
+
+caption_1 = paste0('Match ', match,' : ', team_1, ' Vs ', team_2, ' (Innings of ', inn_1,')')
+
+caption_2 = paste0('Match ', match,' : ', team_1, ' Vs ', team_2, ' (Innings of ', inn_2,')')
+
+team_1 = team_1
+team_2 = team_2
+```
+
+```{r,results='asis'}
+cat("## Innings of ", inn_1, "{-}\n")
+```
+ 
+```{r}
+tab_batting(d1, inn = inn_1)
+```
+
+```{r}
+tab_bowling(d1, inn = inn_1)
+```
+
+```{r,results='asis'}
+cat("## Innings of ", inn_2, "{-}\n")
+```
+
+```{r}
+tab_batting(d1, inn = inn_2)
+```
+
+```{r}
+tab_bowling(d1, inn = inn_2)
+```
+
+## Man of the Match {-}
+
++ Gopi (Challengers)
+
+## Notes {-}
++ Ball counts are approximate.
