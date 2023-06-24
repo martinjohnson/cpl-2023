@@ -1,0 +1,62 @@
+--- 
+title: "Cambourne Premier League 2023"
+author: "CPL Committee"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+#github-repo: rstudio/bookdown-demo
+description: "CPL 2023 Score book."
+---
+
+# CPL 2023 Score Board {-}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+```{r}
+rm(list=ls())
+```
+
+```{r, libraries}
+library(tidyverse)
+library(kableExtra)
+library(readxl)
+library(DT)
+```
+
+```{r}
+source('./rfuncs.R')
+```
+
+## Agreement / Consent {-#consent}
+
+
+Welcome to CPL 2023 Score board ! 
+
+This website is password protected to ensure that only authorized individuals can access its information. You have entered the password accessing this website. 
+
+By accessing this content, you acknowledge and agree to the following:
+
+  1. The content provided on this website is intended solely for the individuals who have been granted access through the designated password.
+  
+  2. You understand that sharing the password or any content from this website with unauthorized individuals is strictly prohibited.
+  
+  3. You agree to respect the confidentiality of the information provided on this website and not to disclose, copy, or distribute any part of it without prior written consent.
+  
+  4. Any actions that compromise the security or integrity of this website, including attempting to bypass the password protection, are strictly prohibited.
+
+We emphasize the importance of maintaining the exclusivity of the content on this website. If you do not agree to these terms, please exit this website immediately.
+
+By proceeding further, you confirm your understanding of these terms and agree to abide by them.   
+
+Thank you for your cooperation and enjoy your CPL 2023 Score board !
+
