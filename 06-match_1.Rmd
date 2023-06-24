@@ -1,0 +1,43 @@
+# Kings vs Titans (M6) {-#match6}
+
+```{r}
+team_1 <- 'Kings'
+team_2 <-  'Titans'
+inn_1 <- 'Titans'
+inn_2 <- 'Kings'
+match <- 6
+  
+d1 <- readxl::read_excel('./ScoreCards.xlsx', sheet='M6')  
+```
+
+```{r,results='asis'}
+cat("## Innings of ", inn_1, "{-}\n")
+```
+ 
+```{r}
+tab_batting(d1, inn = inn_1)
+```
+
+```{r}
+tab_bowling(d1, inn = inn_1)
+```
+
+```{r,results='asis'}
+cat("## Innings of ", inn_2, "{-}\n")
+```
+
+```{r}
+tab_batting(d1, inn = inn_2)
+```
+
+```{r}
+tab_bowling(d1, inn = inn_2)
+```
+
+
+## Man of the Match {-}
+
++ Ashish R (Kings)
+
+## Notes {-}
++ Ball counts are approximate.
