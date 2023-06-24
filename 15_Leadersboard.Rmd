@@ -1,0 +1,36 @@
+# Leaderboard {-#lb1}
+
+## Batting Leaderboard {-}
+
+```{r}
+list_sheets <- c('M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9')
+
+out_bat <- map_df(1:9, ~lb_bat(i=list_sheets[.x]))
+
+tab_bat <- out_bat %>% group_by(Player) %>%
+  summarise(Innings = n(),
+            Runs = sum(Runs),
+            `4s`= sum(`4s`),
+            `6s` = sum(`6s`)) %>%
+  arrange(desc(Runs))
+
+datatable(tab_bat)
+```
+
+## Bowling Leaderboard {-}
+
+```{r}
+list_sheets <- c('M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9')
+
+out_bowl <- map_df(1:9, ~lb_bowl(i=list_sheets[.x]))
+
+tab_bowl <- out_bowl %>% group_by(Player) %>%
+  summarise(Innings = n(),
+            Overs = sum(Overs),
+            Runs = sum(Runs),
+            Wickets = sum(Wickets)) %>%
+  arrange(desc(Wickets))
+
+
+datatable(tab_bowl)
+```
