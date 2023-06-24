@@ -2,7 +2,7 @@
 
 ## Points Table {-}
 ```{r}
-nrr_1 <- read_xlsx('./ScoreCards.xlsx', sheet = 'NRR')
+nrr_1 <- readxl::read_xlsx('./ScoreCards.xlsx', sheet = 'NRR')
 
 nrr_weighted <- nrr_1 %>%
   group_by(teams) %>%
