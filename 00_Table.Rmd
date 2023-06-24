@@ -1,0 +1,52 @@
+# Team Standings {-#score1}
+
+## Points Table {-}
+```{r}
+nrr_1 <- read_xlsx('./ScoreCards.xlsx', sheet = 'NRR')
+
+nrr_weighted <- nrr_1 %>%
+  group_by(teams) %>%
+  summarise(
+    rs = signif(sum(`runs_scored`), 6),
+    of = signif(sum(`balls_faced`), 6),
+    rc = signif(sum(`runs_conceded`), 6),
+    ob = signif(sum(`balls_bowled`), 6)
+  ) %>%
+  mutate(nrr_1 = signif((rs / of) - (rc / ob), 3)) %>%
+  arrange(desc(nrr_1))
+
+names(nrr_weighted) <-
+  c('Teams',
+    'Runs Scored',
+    'Balls Faced',
+    'Runs Conceded',
+    'Balls Bowled',
+    'NRR (weighted)')
+
+tab_1 <- nrr_1 %>% group_by(teams) %>% mutate(N = n()) %>% 
+  mutate(Win = sum(Results)) %>% 
+  mutate(Loss = N-Win ) %>% 
+  mutate(Total_points = sum(Points) ) %>% 
+  distinct(teams, .keep_all=TRUE) %>% 
+  select(teams, N,Win,Loss, Total_points)
+names(tab_1) <-
+  c('Teams',
+    'Played',
+    'Win',
+    'Loss',
+    'Points')
+
+res_tab_1 <-
+  tab_1 %>% inner_join(nrr_weighted %>% select(Teams, NRR = `NRR (weighted)`)) %>%
+  arrange(desc(NRR))
+
+res_tab_2 <-res_tab_1 
+# %>% select(-NRR)
+
+date_1 <- paste("Updated on", Sys.Date())
+
+
+kable(res_tab_1) %>%
+  kable_styling(bootstrap_options = "striped", full_width = TRUE) %>%
+  footnote(date_1, general_title = "")
+```
