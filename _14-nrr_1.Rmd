@@ -1,0 +1,86 @@
+# Net Run Rate {-#NRR01}
+\begin{equation}
+Net Run Rate = {Run \: Rate \: For} - {Run \: Rate \: Against}
+\end{equation}
+
+where,
+\begin{equation}
+Run \: Rate \: For = \frac{Runs \:Scored \:by \:Team} {Number\: of \:Overs \:Faced}
+\end{equation}
+
+\begin{equation}
+Run \: Rate \: Against = \frac{Runs \:Scored \:by \:Opponent \:Team} {Number \:of \:Overs \: Bowled}
+\end{equation}
+
+<!-- \begin{equation} -->
+
+<!-- NRR = \frac{Runs\ Scored}{Balls\ Faced} - \frac{Runs\ Conceded}{Balls\ Bowled} -->
+<!-- \end{equation} -->
+
+```{r}
+nrr_1 <- readxl::read_xlsx('./ScoreCards.xlsx', sheet='NRR')  
+
+nrr_weighted <- nrr_1 %>%
+  group_by(teams) %>%
+  summarise(
+    rs = signif(sum(`runs_scored`), 6),
+    of = signif(sum(`balls_faced`), 6),
+    rc = signif(sum(`runs_conceded`), 6),
+    ob = signif(sum(`balls_bowled`), 6)
+  ) %>%
+  mutate(nrr_1 = signif((rs / of) - (rc / ob), 3)) %>%
+  arrange(desc(nrr_1))
+
+names(nrr_weighted) <-
+  c('Teams',
+    'Runs Scored',
+    'Balls Faced',
+    'Runs Conceded',
+    'Balls Bowled',
+    'NRR (weighted)')
+
+tab_1 <- nrr_1 %>% group_by(teams) %>% mutate(N = n()) %>% 
+  mutate(Win = sum(Results)) %>% 
+  mutate(Loss = N-Win ) %>%
+#  mutate(NR = N-Win-Loss) %>% 
+  mutate(Total_points = sum(Points) ) %>% 
+  distinct(teams, .keep_all=TRUE) %>% 
+  select(teams, N,Win,Loss, Total_points)
+names(tab_1) <-
+  c('Teams',
+    'Played',
+    'Win',
+    'Loss',
+    'Points')
+
+res_tab_1 <-
+  tab_1 %>% inner_join(nrr_weighted %>% select(Teams, NRR = `NRR (weighted)`)) %>%
+  arrange(desc(NRR))
+
+res_tab_2 <-res_tab_1 %>% select(-NRR)
+
+date_1 <- paste("Updated on", Sys.Date())
+
+```
+
+
+```{r}
+tab_2 <- nrr_1 %>% 
+  #mutate(Results_c = ifelse(Results ==1, 'W', 'L'))  %>% 
+  select(-Results, -Points)
+
+names(tab_2) <- c('Match', 'Teams', 'Runs\n Scored', 'Balls\n Faced', 'Runs\n Conceded',
+                  'Balls\n Bowled', 'Description')
+kable(tab_2) %>%
+  kable_styling() %>% 
+  column_spec(7, width = "24em") %>% 
+  landscape()
+```
+
+## Team Standings {-}
+```{r}
+kable(res_tab_1) %>%
+  kable_styling() %>%
+  footnote(date_1, general_title = "")
+
+```
