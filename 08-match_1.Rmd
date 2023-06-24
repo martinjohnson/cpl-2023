@@ -1,0 +1,43 @@
+# Royals vs Kings (M8) {-#match8}
+
+```{r}
+team_1 <- 'Royals'
+team_2 <-  'Kings'
+inn_1 <- 'Royals'
+inn_2 <- 'Kings'
+match <- 8
+  
+d1 <- readxl::read_excel('./ScoreCards.xlsx', sheet='M8')  
+```
+
+```{r,results='asis'}
+cat("## Innings of ", inn_1, "{-}\n")
+```
+ 
+```{r}
+tab_batting(d1, inn = inn_1)
+```
+
+```{r}
+tab_bowling(d1, inn = inn_1)
+```
+
+```{r,results='asis'}
+cat("## Innings of ", inn_2, "{-}\n")
+```
+
+```{r}
+tab_batting(d1, inn = inn_2)
+```
+
+```{r}
+tab_bowling(d1, inn = inn_2)
+```
+
+
+## Man of the Match {-}
+
++ Jay B (Royals)
+
+## Notes {-}
++ Ball counts are approximate.
