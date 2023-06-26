@@ -3,9 +3,9 @@
 ## Batting Leaderboard {-}
 
 ```{r}
-list_sheets <- c('M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9')
+list_sheets <- c('M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9','M11','M12')
 
-out_bat <- map_df(1:9, ~lb_bat(i=list_sheets[.x]))
+out_bat <- map_df(1:length(list_sheets), ~lb_bat(i=list_sheets[.x]))
 
 tab_bat <- out_bat %>% group_by(Player) %>%
   summarise(Innings = n(),
@@ -20,9 +20,9 @@ datatable(tab_bat)
 ## Bowling Leaderboard {-}
 
 ```{r}
-list_sheets <- c('M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9')
+list_sheets <- c('M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9','M11','M12')
 
-out_bowl <- map_df(1:9, ~lb_bowl(i=list_sheets[.x]))
+out_bowl <- map_df(1:length(list_sheets), ~lb_bowl(i=list_sheets[.x]))
 
 tab_bowl <- out_bowl %>% group_by(Player) %>%
   summarise(Innings = n(),

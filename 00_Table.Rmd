@@ -2,7 +2,12 @@
 
 ## Points Table {-}
 ```{r}
-nrr_1 <- readxl::read_xlsx('./ScoreCards.xlsx', sheet = 'NRR')
+nrr_1 <- readxl::read_xlsx('./ScoreCards.xlsx', sheet = 'NRR') %>% 
+  mutate(Results_c = case_when(
+    Results == 1 ~ 'Win',
+    Results == 0 ~ 'Loss',
+    Results == 2 ~ 'NR'
+    ))
 
 nrr_weighted <- nrr_1 %>%
   group_by(teams) %>%
@@ -23,30 +28,44 @@ names(nrr_weighted) <-
     'Balls Bowled',
     'NRR (weighted)')
 
-tab_1 <- nrr_1 %>% group_by(teams) %>% mutate(N = n()) %>% 
-  mutate(Win = sum(Results)) %>% 
-  mutate(Loss = N-Win ) %>% 
+# table with wins/loss/nr
+tab_1 <- nrr_1 %>% group_by(teams) %>% 
+  count(teams,Results_c) %>% 
+  spread(Results_c, n) %>% 
+  ungroup() %>% 
+  mutate_all(~replace_na(.,0)) %>% 
+  select(teams,Win,Loss,NR)
+
+# table with points
+tab_2 <- nrr_1 %>% group_by(teams) %>% 
+  mutate(N = n()) %>%
   mutate(Total_points = sum(Points) ) %>% 
   distinct(teams, .keep_all=TRUE) %>% 
-  select(teams, N,Win,Loss, Total_points)
-names(tab_1) <-
+  select(teams, N, Total_points)
+
+# combined table
+res_tab <- tab_1 %>% inner_join(tab_2) %>% 
+  select(teams, N, Win, Loss,NR,Total_points)
+
+names(res_tab) <-
   c('Teams',
     'Played',
     'Win',
     'Loss',
+    'NR',
     'Points')
 
-res_tab_1 <-
-  tab_1 %>% inner_join(nrr_weighted %>% select(Teams, NRR = `NRR (weighted)`)) %>%
-  arrange(desc(NRR))
+out_tab_1 <-
+  res_tab %>% inner_join(nrr_weighted %>% select(Teams, NRR = `NRR (weighted)`)) %>%
+  arrange(desc(Points))
 
-res_tab_2 <-res_tab_1 
-# %>% select(-NRR)
+# without NRR values
+
+out_tab_2 <- out_tab_1 %>% select(-NRR)
 
 date_1 <- paste("Updated on", Sys.Date())
 
-
-kable(res_tab_1) %>%
+kable(out_tab_2) %>%
   kable_styling(bootstrap_options = "striped", full_width = TRUE) %>%
   footnote(date_1, general_title = "")
 ```

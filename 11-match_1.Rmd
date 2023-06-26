@@ -1,0 +1,43 @@
+# Titans vs Royals (M11) {-#match11}
+
+```{r}
+team_1 <- 'Titans'
+team_2 <-  'Royals'
+inn_1 <- 'Titans'
+inn_2 <- 'Royals'
+match <- 11
+  
+d1 <- readxl::read_excel('./ScoreCards.xlsx', sheet='M11')  
+```
+
+```{r,results='asis'}
+cat("## Innings of ", inn_1, "{-}\n")
+```
+ 
+```{r}
+tab_batting(d1, inn = inn_1)
+```
+
+```{r}
+tab_bowling(d1, inn = inn_1)
+```
+
+```{r,results='asis'}
+cat("## Innings of ", inn_2, "{-}\n")
+```
+
+```{r}
+tab_batting(d1, inn = inn_2)
+```
+
+```{r}
+tab_bowling(d1, inn = inn_2)
+```
+
+
+## Man of the Match {-}
+
++ Anant (Royals)
+
+## Notes {-}
++ Ball counts are approximate.
